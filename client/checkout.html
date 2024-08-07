@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checkout</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700;800;900&display=swap">
+    <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/davidshimjs/qrcodejs/qrcode.min.js"></script>
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f7f7f7;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+        }
+
+        #qr {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        #qr img {
+            max-width: 300px;
+            max-height: 300px;
+        }
+
+        #success {
+            display: none;
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        #success .text {
+            margin-top: 10px;
+            font-size: 20px;
+            font-weight: 600;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="qr">
+        <p>Scan QR Code To Pay</p>
+        <div id="qrcode"></div>
+        <img id="image" src="" />
+    </div>
+
+    <div id="success">
+        <lottie-player src="https://assets7.lottiefiles.com/private_files/lf30_poez9ped.json" background="transparent" speed="1" style="width: 300px; height: 300px;" loop autoplay></lottie-player>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const params = new URLSearchParams(window.location.search);
+            const totalPayable = params.get('totalprice');
+
+            const qrcode = new QRCode(document.getElementById('qrcode'), {
+  text: 'http://jindo.dev.naver.com/collie',
+  width: 200,
+  height: 200,
+  colorDark : '#000',
+  colorLight : '#fff',
+  correctLevel : QRCode.CorrectLevel.H
+});
+
+            const image = document.getElementById('image');
+           //image.src = 'asset/img/payment.jpeg';
+
+            setTimeout(() => {
+                const qr = document.getElementById('qr');
+                const success = document.getElementById('success');
+                qr.style.display = 'none';
+                success.style.display = 'block';
+
+                setTimeout(() => {
+                    window.location.href = 'index.html'; 
+                }, 5000); 
+
+                fetch('/products', {
+                    method: 'DELETE'
+                })
+                .then(response => response.json())
+                .then(result => {
+                    console.log(result.message);
+                })
+                .catch(error => console.error('Error deleting products:', error));
+            }, 7000);
+        });
+    </script>
+</body>
+
+</html>
