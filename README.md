@@ -25,6 +25,7 @@ Features:
  * contact-free checkout
  * Easy deployment
 
+![image](https://github.com/user-attachments/assets/5dbc6fc5-eb25-4365-bd2e-fb8e196c179f)
 
 
 
